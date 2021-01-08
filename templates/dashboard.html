@@ -1,0 +1,10 @@
+{%extends 'layout.html'%}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    {% if id %}
+        <h2>{{ id }}</h2>
+    {% else %}
+        <h2>Please Login</h2>
+    {% endif %}
+{% endblock content %}
