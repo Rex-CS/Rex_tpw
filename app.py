@@ -2,6 +2,7 @@ from enum import unique
 from flask import Flask, render_template, url_for, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sqlalchemy import exc
 
 from sqlalchemy.orm import backref
 
@@ -25,7 +26,7 @@ class User(db.Model):
     records = db.relationship('Record', backref='User', lazy=True)
 
     def __repr__(self) -> str:
-        return super().__repr__()
+        return f"User('{self.name}', '{self.email}','{self.student_id}','{self.pAcademic}','{self.pCultural}','{self.pSocial}','{self.records}','{self.institute}','{self.id}')"
 
 class Record(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,10 +51,20 @@ def hello_world():
         sid = form.get('student_id_number')
         eml = form.get('email_address')
         passw = form.get('Password')
+        institute = form.get('institution_name')
         print(form)
-        if sid != None and name != None and passw != None and eml != None:
-             return redirect(url_for('dashboard', id=sid))
-        return "Please verify"
+        if sid != None and name != None and passw != None and eml != None and institute != None:
+            us=User(name=name, email=eml, password=passw, student_id=sid, institute=institute)
+            try:
+                print('trying')
+                db.session.add(us)
+                db.session.commit()
+                print('commited')
+                return redirect(url_for('dashboard', id=us.id))
+            except exc.IntegrityError as err:
+                return "email is already used"
+        else:
+            return "Please verify"
         #sid = request.form['student_id_number']
         #return redirect(url_for('dashboard', id=sid))
     else:
@@ -62,7 +73,9 @@ def hello_world():
 @app.route('/dashboard/')
 def dashboard():
     sid = request.args['id']
-    return render_template('Student_Dashboard.html', id=sid)
+    user=User.query.filter_by(id=sid).first()
+    print(user)
+    return render_template('Student_Dashboard.html', id=sid, user=user)
 
 if __name__ == '__main__':
     app.run()

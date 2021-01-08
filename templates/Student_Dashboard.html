@@ -8,12 +8,13 @@
         <link rel="stylesheet" href="Project1.html">
     </head>
     <body >
+      {%if user%}
         <div class="w3-navbar w3-black">
             <div class="w3-btn w3-xlarge w3-wide">
               <a href="#">Rex</a>
             </div>
             <div class="w3-btn w3-right w3-xlarge w3-wide">
-                Student Name
+                {{user.name}}
             </div>
         </div>
 
@@ -22,15 +23,15 @@
                 DASHBOARD
             </h1>
 
-            <img src="https://image.freepik.com/free-vector/t-rex-mascot-logo-esport-gaming_92675-421.jpg" width="12%" alt="" style="float: right;padding: 0px;">
+            <img src="https://image.freepik.com/free-vector/t-rex-mascot-logo-esport-gaming_92675-421.jpg" width="12%" alt="" class="w3-image"style="float: right;padding: 0px;">
 
             <hr width="100%" class="w3-black">
             <div class="w3-left w3-xlarge">
                 <div id ="College_name">
-                    College Name
+                    {{user.institute}}
                 </div>
                 <div style = "white-space: nowrap;"id ="Student_name">
-                    Student Name
+                    {{user.student_id}}
                 </div>
             </div>
 
@@ -45,7 +46,7 @@
                 <h4>Academic</h4>
                 <div class="w3-clear"></div>
                 <div class="w3-right">
-                    <h3>52</h3>
+                    <h3>{{user.pAcademic}}</h3>
                 </div>
 
               </div>
@@ -57,7 +58,7 @@
                   <h4>Cultural</h4>
                   <div class="w3-clear"></div>
                   <div class="w3-right">
-                      <h3>52</h3>
+                      <h3>{{user.pCultural}}</h3>
                     </div>
   
                 </div>
@@ -69,7 +70,7 @@
                   <h4>Social</h4>
                   <div class="w3-clear"></div>
                   <div class="w3-right">
-                      <h3>52</h3>
+                      <h3>{{user.pSocial}}</h3>
                     </div>
   
                 </div>
@@ -113,8 +114,9 @@
                 </tr>
               </table>
         </div>
-
-
-
+    {%else%}
+    <h5 class="w3-center">Please Sign In to view Dashboard</h5>
+    <div class="w3-container w3-center"><a href="/signIn" class="w3-btn w3-blue w3-round w3-center">signIn</a></div>
+    {%endif%}
     </body>
 </html>
