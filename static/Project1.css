@@ -1,0 +1,117 @@
+*{
+    padding:1px;
+    margin: 1%;
+}
+
+body {
+    background-color: white;
+  }
+
+
+
+.nav_bar
+{
+    display: flex;
+    width: 96%;
+    justify-content: space-around;
+    background-color: black;
+    size: relative ;
+    
+}
+.nav_bar a
+{   
+    text-decoration: none;
+    color: rgb(226,226,226);
+    font-size: 22px;
+   
+}
+.team_name a{
+   margin-left:10%;
+   justify-content: space-around;
+   font-family:cursive;
+   font-weight: bolder;
+   text-align: left;
+   letter-spacing: 5px;
+   font-size: 30px;
+}
+
+.Sign_In 
+{   
+    display: flex;
+    justify-content: space-around;
+    border-radius: 10px;
+    background-color: black;
+    border-color: white;
+    width: 9%;  
+    border-style:solid;
+    border-width: 1px ; 
+    padding: 8px 16px ;
+    white-space:   nowrap;
+    margin-left: 75%;
+}
+.python_logo
+{
+    display: flex;
+    float: right;
+}
+
+.Text_content
+{
+    display: inline;
+    float: left;
+    width: 50%;
+    font-family: "Comic Sans MS";
+    font-size: 17.5px;
+    color: gray;
+    white-space: pre-wrap; 
+
+}
+
+.Heading
+{   
+    font-family: "Verdana";
+    letter-spacing: 2px;
+}
+
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}
+
+input[type=submit] {
+    display: flex;
+    background-color: rgb(0, 255, 170);
+    color: rgb(56, 49, 49);
+    padding: 12px 20px;
+    border: rgb(75, 83, 76) solid 0.01px;
+    border-radius: 35px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: medium;
+    justify-content: space-around;
+    letter-spacing: 2px;
+    width: 150px;
+    margin: 0px;
+}
+
+input[type=submit]:hover {
+  background-color: lightblue;
+}
+
+.container {
+  border-radius: 10px;
+  background-color: white;
+  border: 1px solid gray;
+  padding: 20px;
+  width: 40%;
+  float: right;
+  margin-right: 25px;
+}

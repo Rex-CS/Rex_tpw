@@ -1,4 +1,3 @@
-from typing import NoReturn
 from flask import Flask, render_template, url_for, redirect, request, flash
 
 app = Flask(__name__, static_folder='static')
