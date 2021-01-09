@@ -10,7 +10,7 @@ from sqlalchemy.orm import backref
 import pytesseract
 import time
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\USER\AppData\Local\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
 
 app = Flask(__name__, static_folder='static')
 UPLOAD_FOLDER = 'certificates'
