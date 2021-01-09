@@ -1,7 +1,7 @@
 {%extends 'layout.html'%}
 
 {%block nav%}
-    <h3>{{rec.User.name}}</h3>
+    <h3>Name</h3>
 {%endblock nav%}
 
 
@@ -9,13 +9,12 @@
     <h1>Records</h1>
     <hr>
     <div class="w3-display-container w3-center">
-        <h6>Organistaion : {{rec.organistaion}}</h6>
+        <h6>Organistaion : {{rec.organisation}}</h6>
         <h6>Points Earned : {{rec.category}} +1</h6>
         <p>Certificate : </p>
-        <img src="{{rec.certificate_uri}}" class="w3-image" >
         <hr>
         <p>Text Extracted : </p>
         <p>{{rec.certificate_text}}</p>
-        <a href="{{url_for('dashboard', id=rec.User.id)}}" class="w3-btn w3-round w3-green">Done</a>
+        <a href="{{url_for('dashboard')}}" class="w3-btn w3-round w3-green">Done</a>
     </div>
 {% endblock content %}

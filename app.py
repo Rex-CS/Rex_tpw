@@ -119,13 +119,13 @@ def addRecord():
             if user:
                 print('start upload')
                 cText = pytesseract.image_to_string(Image.open(file))
-                imgName = f"{userId}_{len(user.records)+1}.png"
+                imgName = f"{userId}_{len(user.records)+1}.jpg"
                 print(imgName)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], imgName))
                 #time.sleep(2)
                 text = "Certificate Text"
                 time.sleep(2)
-                rec = Rec(category=cat, organisation=org, user_id=userId, certificate_uri=f"certificates/{imgName}", certificate_text=cText)
+                rec = Rec(category=cat, organisation=org, user_id=userId, certificate_uri=f"/certificates/{imgName}", certificate_text=cText)
                 try:
                     db.session.rollback()
                     print('trying')
@@ -155,7 +155,7 @@ def addRecord():
 @app.route('/viewRec')
 def viewRec():
     recid = request.args['recid']
-    rec = Record.query.filter_by(id=recid)
+    rec = Rec.query.filter_by(id=recid).first()
     if rec:
         return render_template('viewRec.html', rec=rec)
     return "No Records", 404
