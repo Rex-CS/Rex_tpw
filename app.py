@@ -62,7 +62,7 @@ def hello_world():
                 print('commited')
                 return redirect(url_for('dashboard', id=us.id))
             except exc.IntegrityError as err:
-                return "email is already used"
+                return "email is already used please SignIn"
         else:
             return "Please verify"
         #sid = request.form['student_id_number']
@@ -72,10 +72,27 @@ def hello_world():
 
 @app.route('/dashboard/')
 def dashboard():
-    sid = request.args['id']
-    user=User.query.filter_by(id=sid).first()
-    print(user)
-    return render_template('Student_Dashboard.html', id=sid, user=user)
+    id = request.args['id']
+    user = User.query.filter_by(id=id)
+    if(user != None):
+        return render_template('Student_Dashboard.html', id=id, user=user)
+    else:
+        return render_template('plsSignIn.html')
+
+@app.route('/signIn', methods=['POST', 'GET'])
+def signIn():
+    return render_template('signIn.html')
+
+@app.route('/addRecord', methods=['POST', 'GET'])
+def addRecord():
+    if request.method == 'POST':
+        return "Post"
+    else:
+        id = 1
+    if(User.query.filter_by(id=id) != None):
+        return render_template('addrecord.html', id=id)
+    else:
+        return render_template('plsSignIn.html')
 
 if __name__ == '__main__':
     app.run()
