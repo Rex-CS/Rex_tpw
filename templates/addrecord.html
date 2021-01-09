@@ -35,22 +35,22 @@
     <hr class="new3">
     <div  style="font-size: 30px">
         <h1>ADD RECORD</h1>
-        <form action="/action_page.php">
-        ORGANIZATION NAME: <input type="text">
-
-        ACADEMICS: <input type="number">
-
-        <hr>
-
-        CULTURAL: <input type="number">
-
-        SOCIAL : <input type="number">
-
-            <h1></h1>UPLOAD CERTIFICATE: <input type="file" >
     </div>
-
-    <input  type="submit" value="Upload" style="font-size: large; border-radius: 30px; width: 150px;background-color: rgb(0, 255, 170); margin: 20px; margin-top: 10px; cursor: pointer;">
-</form>
+        <div class="w3-container w3-row">
+            <form action="", method="POST" id="addForm" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{{id}}">
+                <input type="text" name="institute" placeholder="Organisation/Institute">
+                <select class="w3-select" style="width: fit-content;" name="category">
+                    <option value="" disabled selected>Choose a Category</option>
+                    <option value="1">Academic</option>
+                    <option value="2">Cultural</option>
+                    <option value="3">Social</option>
+                  </select>
+                <input type="file" name="file" placeholder="Choose Image">
+            </form>
+            
+            <input type="submit" class="w3-input w3-btn" value="Submit" form="addForm" formmethod="POST" style="width: fit-content;">
+        </div>
 
 </body>
 

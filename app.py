@@ -1,15 +1,25 @@
 from enum import unique
+import os
+from PIL.Image import Image
 from flask import Flask, render_template, url_for, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import exc
-
+from werkzeug.utils import secure_filename
 from sqlalchemy.orm import backref
+import pytesseract
+import time
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\USER\AppData\Local\Tesseract-OCR\tesseract.exe'
 
 app = Flask(__name__, static_folder='static')
+UPLOAD_FOLDER = 'certificates'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app.config['SECRET_KEY'] = '3e44bf25ddddcbdf3f0c476982c4f5b5'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 db = SQLAlchemy(app)
 
@@ -41,7 +51,9 @@ class Record(db.Model):
     def __repr__(self) -> str:
         return super().__repr__()
 
-
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods = ['POST', 'GET'])
 def hello_world():
@@ -81,18 +93,61 @@ def dashboard():
 
 @app.route('/signIn', methods=['POST', 'GET'])
 def signIn():
-    return render_template('signIn.html')
+    return render_template('Student_login.html')
 
 @app.route('/addRecord', methods=['POST', 'GET'])
 def addRecord():
-    if request.method == 'POST':
-        return "Post"
-    else:
-        id = 1
-    if(User.query.filter_by(id=id) != None):
-        return render_template('addrecord.html', id=id)
-    else:
-        return render_template('plsSignIn.html')
+     form = request.form
+     org = form.get('institute')
+     cat = form.get('catgeory')
+     userId = form.get('id')
+     user = User.query.filter_by(id=userId).first()
+     if request.method == 'POST':
+        print(request.form.get('category'))
+        if 'file' not in request.files:
+            print('No file part')
+            return "Verify Selected Image"
+        file = request.files['file']
+        if file.filename == '':
+            print('No File')
+            return "No File Selected"
+        if file and allowed_file(file.filename):
+            print('No image prob')
+            print(org)
+            if user:
+                print('start upload')
+                imgName = f"{userId}_{len(user.records)+1}.png"
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], imgName))
+                time.sleep(1)
+                text = pytesseract.image_to_string(Image.open(f'certificates/{imgName}'))
+                time.sleep(2)
+                rec = Record(category=cat, organistaion=org, user_id=userId, certificate_uri=f'certificates/{imgName}', certificate_text=text)
+                db.session.add(rec)
+                db.session.comit()
+                print(text)
+                return redirect(url_for('viewRec', recid=rec.id))
+            else:
+                return "Check values"
+        else:
+            return "Problem with image"
+     else:
+        print('get')
+        id = request.args.get('id')
+        print(id)
+        if(User.query.filter_by(id=id)):
+            return render_template('addrecord.html', id=id)
+        else:
+            return render_template('plsSignIn.html')
+
+app.route('/viewRec')
+def viewRec():
+    recid = request.args['recid']
+    rec = Record.query.filter_by(id=recid)
+    if rec:
+        return render_template('viewRec.html', rec=rec)
+    return "No Records", 404
+    
+
 
 if __name__ == '__main__':
     app.run()
