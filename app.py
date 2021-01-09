@@ -10,7 +10,7 @@ from sqlalchemy.orm import backref
 import pytesseract
 import time
 
-pytesseract.pytesseract.tesseract_cmd = './.apt/usr/share/tesseract-ocr/4.00/tessdata'
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 app = Flask(__name__, static_folder='static')
 UPLOAD_FOLDER = 'certificates'
@@ -119,7 +119,7 @@ def addRecord():
             if user:
                 print('start upload')
                 cText = pytesseract.image_to_string(Image.open(file))
-                imgName = f"{userId}_{len(user.records)+1}.jpg"
+                imgName = f"{userId}_{len(user.records)+1}.png"
                 print(imgName)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], imgName))
                 #time.sleep(2)
