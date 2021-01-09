@@ -2,6 +2,18 @@
     padding: 0px;
     margin: 0px;
 }
+body
+{
+    background: url(F:\Z_Our_project/Recent/Rex_tpw-master/static/Backgorund.JFIF);
+    background-color: rgb(182, 193, 197);
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+
+}
 
 .container_1
 {
