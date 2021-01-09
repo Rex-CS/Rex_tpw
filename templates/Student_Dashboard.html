@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="Project1.html">
     </head>
     <body >
+      {%if user and id%}
         <div class="w3-navbar w3-black">
             <div class="w3-btn w3-xlarge w3-wide">
               <a href="#">Rex</a>
@@ -79,10 +80,10 @@
 
         <hr>
           To upload your certificate, cleck here -
-        <form action = "{{url_for('addRecord')}}" method="GET" id="addForm">
+        <form action = "" method="POST" id="addForm">
           <input type="hidden" name="id" value="{{user.id}}">
         </form>
-        <input  type="submit" form="addForm" formmethod="GET" value="Add Record" style="font-size: large; border-radius: 30px; width: 150px;background-color: rgb(218, 253, 60); margin: 20px; margin-top: 10px; cursor: pointer;">
+        <input  type="submit" form="addForm" formmethod="POST" value="Add Record" style="font-size: large; border-radius: 30px; width: 150px;background-color: rgb(218, 253, 60); margin: 20px; margin-top: 10px; cursor: pointer;">
 
         <hr class="w3-gray ">
 
@@ -120,5 +121,8 @@
                 </tr>
               </table>
         </div>
+        {%else%}
+        Please Sign In
+        {%endif%}
     </body>
 </html>

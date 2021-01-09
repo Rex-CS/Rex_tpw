@@ -1,6 +1,6 @@
 from enum import unique
 import os
-from PIL.Image import Image
+from PIL import Image
 from flask import Flask, render_template, url_for, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -42,9 +42,9 @@ class Record(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.Integer, nullable=False)
     organisation = db.Column(db.String(100), nullable=False)
-    certificate_uri = db.Column(db.String(20), unique=True, nullable=False)
+    certificate_uri = db.Column(db.String(20), nullable=False)
     certificate_text = db.Column(db.Text)
-    verified = db.Column(db.Boolean)
+    verified = db.Column(db.Boolean, default=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
@@ -101,6 +101,7 @@ def addRecord():
      org = form.get('institute')
      cat = form.get('catgeory')
      userId = form.get('id')
+     print('userid:'+userId)
      user = User.query.filter_by(id=userId).first()
      if request.method == 'POST':
         print(request.form.get('category'))
@@ -117,15 +118,22 @@ def addRecord():
             if user:
                 print('start upload')
                 imgName = f"{userId}_{len(user.records)+1}.png"
+                print(imgName)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], imgName))
-                time.sleep(1)
-                text = pytesseract.image_to_string(Image.open(f'certificates/{imgName}'))
+                #time.sleep(2)
+                text = "Certificate Text"
                 time.sleep(2)
-                rec = Record(category=cat, organistaion=org, user_id=userId, certificate_uri=f'certificates/{imgName}', certificate_text=text)
-                db.session.add(rec)
-                db.session.comit()
+                rec = Record(category=cat, organisation=org, user_id=userId, certificate_uri=f'certificates/{imgName}', certificate_text=text)
+                try:
+                    print('trying')
+                    db.session.add(rec)
+                    db.session.commit()
+                    print('commited')
+                    return redirect(url_for('viewRec', recid=rec.id))
+                except exc.IntegrityError as err:
+                    return "error occured"
                 print(text)
-                return redirect(url_for('viewRec', recid=rec.id))
+                
             else:
                 return "Check values"
         else:
