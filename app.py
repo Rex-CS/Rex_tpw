@@ -86,6 +86,7 @@ def hello_world():
 def dashboard():
     id = request.args['id']
     user = User.query.filter_by(id=id)
+    print(id)
     if(user != None):
         return render_template('Student_Dashboard.html', id=id, user=user)
     else:
@@ -101,7 +102,7 @@ def addRecord():
      org = form.get('institute')
      cat = form.get('catgeory')
      userId = form.get('id')
-     print('userid:'+userId)
+     print(userId)
      user = User.query.filter_by(id=userId).first()
      if request.method == 'POST':
         print(request.form.get('category'))
@@ -117,16 +118,18 @@ def addRecord():
             print(org)
             if user:
                 print('start upload')
+                cText = pytesseract.image_to_string(Image.open(file))
                 imgName = f"{userId}_{len(user.records)+1}.png"
                 print(imgName)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], imgName))
                 #time.sleep(2)
                 text = "Certificate Text"
                 time.sleep(2)
-                rec = Record(category=cat, organisation=org, user_id=userId, certificate_uri=f'certificates/{imgName}', certificate_text=text)
+                rec = Record(category=cat, organisation=org, user_id=userId, certificate_uri=f'certificates/{imgName}', certificate_text=cText)
                 try:
                     print('trying')
                     db.session.add(rec)
+                    print('added')
                     db.session.commit()
                     print('commited')
                     return redirect(url_for('viewRec', recid=rec.id))
