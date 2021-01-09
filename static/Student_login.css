@@ -32,6 +32,11 @@ input[type=text], select, textarea {
     margin-bottom: 16px;
     resize: vertical;
 }
+input[type=text], select, textarea:hover
+{
+    box-shadow: 3px 3px grey ;
+}
+
 input[type=password], select, textarea {
     width: 100%;
     padding: 12px;
@@ -41,6 +46,10 @@ input[type=password], select, textarea {
     margin-top: 6px;
     margin-bottom: 16px;
     resize: vertical;
+}
+input[type=password], select, textarea:hover
+{
+    box-shadow: -3px -3px grey ;
 }
 
 input[type=submit] {
@@ -58,4 +67,18 @@ input[type=submit] {
     width: 100px;
     margin-left: 0px;
 }
+input[type=submit]:hover
+{
+    box-shadow: 3px 4px grey ;
+}
 
+.Register_button 
+{
+    text-decoration: none;
+    color: blue;
+
+}
+.Register_button:hover
+{
+    color: red;
+}
