@@ -80,10 +80,10 @@
 
         <hr>
           To upload your certificate, cleck here -
-        <form action = "" method="POST" id="addForm">
+        <form action = "{{url_for('addRecord')}}" method="GET" id="addForm">
           <input type="hidden" name="id" value="{{user.id}}">
         </form>
-        <input  type="submit" form="addForm" formmethod="POST" value="Add Record" style="font-size: large; border-radius: 30px; width: 150px;background-color: rgb(218, 253, 60); margin: 20px; margin-top: 10px; cursor: pointer;">
+        <input  type="submit" form="addForm" formmethod="GET" value="Add Record" style="font-size: large; border-radius: 30px; width: 150px;background-color: rgb(218, 253, 60); margin: 20px; margin-top: 10px; cursor: pointer;">
 
         <hr class="w3-gray ">
 

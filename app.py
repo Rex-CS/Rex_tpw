@@ -33,12 +33,12 @@ class User(db.Model):
     pAcademic = db.Column(db.Integer, default=0)
     pCultural = db.Column(db.Integer, default=0)
     pSocial = db.Column(db.Integer, default=0)
-    records = db.relationship('Record', backref='User', lazy=True)
+    records = db.relationship('Rec', backref='User', lazy=True)
 
     def __repr__(self) -> str:
         return f"User('{self.name}', '{self.email}','{self.student_id}','{self.pAcademic}','{self.pCultural}','{self.pSocial}','{self.records}','{self.institute}','{self.id}')"
 
-class Record(db.Model):
+class Rec(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.Integer, nullable=False)
     organisation = db.Column(db.String(100), nullable=False)
@@ -49,7 +49,7 @@ class Record(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self) -> str:
-        return super().__repr__()
+        return f"Rec('{self.id}','{self.organisation}','{self.category}','{self.user_id}','{self.certificate_uri}','{self.certificate_text}','{self.date}')"
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -85,7 +85,7 @@ def hello_world():
 @app.route('/dashboard/')
 def dashboard():
     id = request.args['id']
-    user = User.query.filter_by(id=id)
+    user = User.query.filter_by(id=id).first()
     print(id)
     if(user != None):
         return render_template('Student_Dashboard.html', id=id, user=user)
@@ -100,7 +100,7 @@ def signIn():
 def addRecord():
      form = request.form
      org = form.get('institute')
-     cat = form.get('catgeory')
+     cat = form.get('category')
      userId = form.get('id')
      print(userId)
      user = User.query.filter_by(id=userId).first()
@@ -125,11 +125,13 @@ def addRecord():
                 #time.sleep(2)
                 text = "Certificate Text"
                 time.sleep(2)
-                rec = Record(category=cat, organisation=org, user_id=userId, certificate_uri=f'certificates/{imgName}', certificate_text=cText)
+                rec = Rec(category=cat, organisation=org, user_id=userId, certificate_uri=f"certificates/{imgName}", certificate_text=cText)
                 try:
+                    db.session.rollback()
                     print('trying')
                     db.session.add(rec)
                     print('added')
+                    print(rec)
                     db.session.commit()
                     print('commited')
                     return redirect(url_for('viewRec', recid=rec.id))
@@ -150,7 +152,7 @@ def addRecord():
         else:
             return render_template('plsSignIn.html')
 
-app.route('/viewRec')
+@app.route('/viewRec')
 def viewRec():
     recid = request.args['recid']
     rec = Record.query.filter_by(id=recid)
